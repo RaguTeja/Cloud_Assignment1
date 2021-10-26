@@ -1,0 +1,18 @@
+#Calculating tf-idf of top 10 posts for each of the top 10 users.
+
+
+# getting top 10 users
+CREATE TABLE TopMostUsers ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' AS SELECT owneruserid, SUM (score) AS OveralScore FROM posts GROUP BY owneruserid ORDER BY OveralScore DESC LIMIT 10;
+
+#Getting post of each user
+CREATE TABLE TopMostUserPosts AS SELECT owneruserid, body, title, tags FROM posts WHERE owneruserid in (SELECT owneruserid FROM TopMostUsers) GROUP BY owneruserid, body, title, tags;
+
+
+#storing the results into hdfs
+INSERT OVERWRITE DIRECTORY '/data/Userdata/hiveFinalResults' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' SELECT owneruserid, body, title FROM TopMostUserPosts GROUP BY owneruserid, body, title;
+
+#merging the outputs
+hdfs dfs -getmerge /data/Userdata/hiveFinalResults Results.csv;
+
+#executing mapper and reducer jobs using bash file for each user
+bash mapreduce.sh <File_name of each user text file which are generated after splitting>
