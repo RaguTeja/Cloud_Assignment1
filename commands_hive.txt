@@ -1,0 +1,16 @@
+#Data Loading into Hive for our queries
+create table posts(Id int, Score int, Body String, OwnerUserId Int, Title String, Tags String) row format delimited FIELDS TERMINATED BY ',' location '/user/data/merged';
+SET hive.cli.print.header=true;
+
+#Top 10 posts by score
+SELECT id, title, score FROM posts ORDER BY score DESC LIMIT 10;
+
+
+#Top 10 users by post score
+SELECT OwnerUserId, SUM(Score) AS OveralScore FROM posts GROUP BY OwnerUserId ORDER BY OveralScore DESC LIMIT 10;
+
+
+#Number of Distinct users who used word cloud.
+SELECT COUNT(DISTINCT OwnerUserId) FROM posts WHERE (body LIKE '%cloud%' OR title LIKE '%cloud%' OR tags LIKE '%cloud%');
+
+
