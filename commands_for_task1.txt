@@ -1,0 +1,4 @@
+SELECT * from (SELECT p.*, row_number() over(order by ViewCount DESC) as random_num from Posts p where p.ViewCount>40000) x where x.random_num <=50000;
+SELECT * from (SELECT p.*, row_number() over(order by ViewCount DESC) as random_num from Posts p where p.ViewCount>40000) x where (x.random_num>=50001 and x.random_num<=100000);
+SELECT * from (SELECT p.*, row_number() over(order by ViewCount DESC) as random_num from Posts p where p.ViewCount>40000) x where (x.random_num>=100001 and x.random_num<=150000);
+SELECT * from (SELECT p.*, row_number() over(order by ViewCount DESC) as random_num from Posts p where p.ViewCount>40000) x where (x.random_num>=150001 and x.random_num<=200000);
