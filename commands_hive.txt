@@ -11,6 +11,6 @@ SELECT OwnerUserId, SUM(Score) AS OveralScore FROM posts GROUP BY OwnerUserId OR
 
 
 #Number of Distinct users who used word cloud.
-SELECT COUNT(DISTINCT OwnerUserId) FROM posts WHERE (body LIKE '%cloud%' OR title LIKE '%cloud%' OR tags LIKE '%cloud%');
+SELECT COUNT(DISTINCT OwnerUserId) FROM posts WHERE (lower(body) LIKE '% cloud %' OR lower(title) LIKE '% cloud %' OR lower(tags) LIKE '% cloud %');
 
 
